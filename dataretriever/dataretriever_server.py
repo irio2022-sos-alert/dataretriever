@@ -1,41 +1,55 @@
-import logging
 from ping3 import ping
 from concurrent import futures
-import dataretriever_pb2
-import dataretriever_pb2_grpc
+import logging
+import ping_pb2
+import ping_pb2_grpc
 import grpc
-from dotenv import load_dotenv
+import os
 
+# _PORT = os.environ["PORT"]
 
-class DataRetrieverServicer(dataretriever_pb2_grpc.DataRetrieverServicer):
+class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
     """Provides methods that implement functionality of data retriever server."""
 
-    def __init__(self) -> None:
-        pass
+    def __init__(self, whistleblower_endpoint) -> None:
+        self.whistleblower_endpoint = whistleblower_endpoint
 
     def PingDomain(
-        self, request: dataretriever_pb2.PingRequest, context
-    ) -> dataretriever_pb2.Status:
+        self, request: ping_pb2.PingRequest, context
+    ) -> ping_pb2.Status:
+        
         response = ping(request.domain)
-        print(f"Ping response: {response}")
-        return dataretriever_pb2.Status(
-            okay=response is not None, 
-            message=""
-        )
+        calculated_sum = response #self.call_service(response)
+
+        return ping_pb2.Status(
+            okay=True,
+            message=f"Ping response: {response}, Sum: {calculated_sum}"
+        ) 
+
+    def call_service(self, time):
+        with grpc.secure_channel(self.whistleblower_endpoint, grpc.ssl_channel_credentials()) as channel:
+            stub = ping_pb2_grpc.WhistleblowerStub(channel)
+
+            sum_request = ping_pb2.CalculateSum(domain="google.com", time=time)
+
+            ping_result = stub.SumResponseTimes(sum_request)
+            
+            return ping_result.sum
 
 
-def serve() -> None:
+def serve(port, whistleblower_endpoint) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    dataretriever_pb2_grpc.add_DataRetrieverServicer_to_server(
-        DataRetrieverServicer(), server
+    ping_pb2_grpc.add_DataRetrieverServicer_to_server(
+        DataRetrieverServicer(whistleblower_endpoint), server
     )
 
-    server.add_insecure_port("[::]:50051")
+    server.add_insecure_port(f"[::]:{port}")
     server.start()
     server.wait_for_termination()
 
 
 if __name__ == "__main__":
-    load_dotenv()
+    port = os.environ.get("PORT", "50051")
+    whistleblower_endpoint = os.environ.get("WHISTLEBLOWER_ENDPOINT", "[::]:50051")
     logging.basicConfig(level=logging.INFO)
-    serve()
+    serve(port, whistleblower_endpoint)

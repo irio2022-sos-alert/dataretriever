@@ -1,0 +1,43 @@
+name: Docker
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  deploy:
+    name: Setup Gcloud Account
+    runs-on: ubuntu-latest
+    env:
+      DATARETRIEVER_IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_DATARETRIEVER_APP_NAME }}:latest
+    steps:
+      - name: Login
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_email: ${{ secrets.GCP_EMAIL }}
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build sender docker
+        run: ./scripts/build-docker.sh dataretriever $SENDER_IMAGE_NAME
+        shell: bash
+
+      - name: Deploy sender docker
+        run: ./scripts/build-deploy.sh ${{ secrets.GCP_DATARETRIEVER_APP_NAME }} $DATARETRIEVER_IMAGE_NAME
+        shell: bash
+
+# gcloud projects add-iam-policy-binding cloud-run-grpc-ping --member=serviceAccount:k-jonak@cloud-run-grpc-ping.iam.gserviceaccount.com --role=roles/run.admin
+
+# gcloud projects add-iam-policy-binding cloud-run-grpc-ping --member=serviceAccount:k-jonak@cloud-run-grpc-ping.iam.gserviceaccount.com --role=roles/storage.admin
+
+# gcloud projects add-iam-policy-binding cloud-run-grpc-ping --member=serviceAccount:k-jonak@cloud-run-grpc-ping.iam.gserviceaccount.com --role=roles/iam.serviceAccountUser
+
+# gcloud iam service-accounts keys create key.json --iam-account k-jonak@cloud-run-grpc-ping.iam.gserviceaccount.com

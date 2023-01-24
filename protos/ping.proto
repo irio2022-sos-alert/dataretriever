@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package ping;
+
+message CalculateSum {
+    string domain = 1;
+    double time = 2;
+};
+
+message RetSum {
+    bool okay = 1;
+    double sum = 2;
+};
+
+service Whistleblower {
+    rpc SumResponseTimes(CalculateSum) returns (RetSum);
+};
+
+message PingRequest {
+    string domain = 1;
+};
+
+message Status {
+    bool okay = 1;
+    string message = 2;
+};
+
+service DataRetriever {
+    rpc PingDomain(PingRequest) returns (Status);
+};

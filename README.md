@@ -1,2 +1,1 @@
-# dataretriever
-DataRetriever service
+# alertmanager
