@@ -3,3 +3,4 @@ ping3
 grpcio-tools
 protobuf
 python-dotenv
+google-cloud-pubsub
