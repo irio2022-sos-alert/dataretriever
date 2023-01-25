@@ -11,14 +11,14 @@ jobs:
     name: Setup Gcloud Account
     runs-on: ubuntu-latest
     env:
-      DATARETRIEVER_IMAGE_NAME: gcr.io/${{ secret.GCP_PROJECT_ID }}/${{ secret.GCP_DATARETRIEVER_APP_NAME }}:latest
+      DATARETRIEVER_IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_DATARETRIEVER_APP_NAME }}:latest
     steps:
       - name: Login
         uses: google-github-actions/setup-gcloud@v0
         with:
-          project_id: ${{ secret.GCP_PROJECT_ID }}
-          service_account_email: ${{ secret.GCP_EMAIL }}
-          service_account_key: ${{ secret.GCP_CREDENTIALS }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_email: ${{ secrets.GCP_EMAIL }}
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: Configure Docker
         run: gcloud auth configure-docker --quiet
