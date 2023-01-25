@@ -11,4 +11,4 @@ COPY . ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 50051
-CMD ["python", "alertsender_server.py"]
+CMD ["python", "dataretriever_server.py"]
