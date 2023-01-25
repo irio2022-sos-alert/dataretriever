@@ -27,19 +27,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Build sender docker
+      - name: Build dataretriever docker
         run: chmod +x scripts/build-docker.sh && ./scripts/build-docker.sh dataretriever $DATARETRIEVER_IMAGE_NAME
         shell: bash
 
-      - name: Deploy sender docker
+      - name: Deploy dataretriever docker
         run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_DATARETRIEVER_APP_NAME }} $DATARETRIEVER_IMAGE_NAME
         shell: bash
 
-      - name: Build sender docker
+      - name: Build whistleblower docker
         run: chmod +x scripts/build-docker.sh && ./scripts/build-docker.sh whistleblower $WHISTLEBLOWER_IMAGE_NAME
         shell: bash
 
-      - name: Deploy sender docker
+      - name: Deploy whistleblower docker
         run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_WHISTLEBLOWER_APP_NAME }} $WHISTLEBLOWER_IMAGE_NAME
         shell: bash
 
