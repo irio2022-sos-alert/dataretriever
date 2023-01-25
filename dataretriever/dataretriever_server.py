@@ -13,6 +13,7 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
     """Provides methods that implement functionality of data retriever server."""
 
     def __init__(self, whistleblower_endpoint) -> None:
+        self.x = 0
         self.whistleblower_endpoint = whistleblower_endpoint
 
     def PingDomain(
@@ -20,11 +21,12 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
     ) -> ping_pb2.Status:
         
         response = ping(request.domain)
-        calculated_sum = response #self.call_service(response)
-
+        calculated_sum = self.call_service(response)
+        self.x += 1
+        
         return ping_pb2.Status(
             okay=True,
-            message=f"Ping response: {response}, Sum: {calculated_sum}"
+            message=f"Ping response: {response}, Sum: {calculated_sum}, count: {self.x}"
         ) 
 
     # def publish_response_data():
