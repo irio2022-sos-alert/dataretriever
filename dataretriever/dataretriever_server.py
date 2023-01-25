@@ -23,7 +23,7 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
         response = ping(request.domain)
         calculated_sum = self.call_service(response)
         self.x += 1
-        
+
         return ping_pb2.Status(
             okay=True,
             message=f"Ping response: {response}, Sum: {calculated_sum}, count: {self.x}"
@@ -40,7 +40,7 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
         with grpc.secure_channel("whistleblower-app-6oed3mtq4a-lz.a.run.app", grpc.ssl_channel_credentials()) as channel:
             stub = ping_pb2_grpc.WhistleblowerStub(channel)
 
-            sum_request = ping_pb2_grpc.CalculateSum(domain="google.com", time=time)
+            sum_request = ping_pb2.CalculateSum(domain="google.com", time=time)
 
             ping_result = stub.SumResponseTimes(sum_request)
             
