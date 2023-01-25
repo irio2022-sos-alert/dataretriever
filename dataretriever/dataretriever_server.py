@@ -5,6 +5,7 @@ import ping_pb2
 import ping_pb2_grpc
 import grpc
 import os
+from google.cloud import pubsub_v1
 
 # _PORT = os.environ["PORT"]
 
@@ -19,15 +20,22 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
     ) -> ping_pb2.Status:
         
         response = ping(request.domain)
-        calculated_sum = response #self.call_service(response)
+        calculated_sum = self.call_service(response)
 
         return ping_pb2.Status(
             okay=True,
             message=f"Ping response: {response}, Sum: {calculated_sum}"
         ) 
 
+    # def publish_response_data():
+    #     publisher = pubsub_v1.PublisherClient()
+    #     topic_name = 'projects/cloud-run-grpc-ping/topics/ping-responses'
+    #     publisher.create_topic(name=topic_name)
+    #     future = publisher.publish(topic_name, b'My first message!', spam='eggs')
+    #     future.result()
+
     def call_service(self, time):
-        with grpc.secure_channel(self.whistleblower_endpoint, grpc.ssl_channel_credentials()) as channel:
+        with grpc.secure_channel("whistleblower-6oed3mtq4a-ew.a.run.app:443", grpc.ssl_channel_credentials()) as channel:
             stub = ping_pb2_grpc.WhistleblowerStub(channel)
 
             sum_request = ping_pb2.CalculateSum(domain="google.com", time=time)
@@ -35,7 +43,6 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
             ping_result = stub.SumResponseTimes(sum_request)
             
             return ping_result.sum
-
 
 def serve(port, whistleblower_endpoint) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -50,6 +57,6 @@ def serve(port, whistleblower_endpoint) -> None:
 
 if __name__ == "__main__":
     port = os.environ.get("PORT", "50051")
-    whistleblower_endpoint = os.environ.get("WHISTLEBLOWER_ENDPOINT", "[::]:50051")
+    whistleblower_endpoint = os.environ.get("WHISTLEBLOWER_ENDPOINT", "[::]:50052")
     logging.basicConfig(level=logging.INFO)
     serve(port, whistleblower_endpoint)

@@ -2,4 +2,3 @@ grpcio
 ping3
 grpcio-tools
 protobuf
-python-dotenv
