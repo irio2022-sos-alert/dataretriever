@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 
 def run():
-    with grpc.secure_channel("dataretriever-app-6oed3mtq4a-lz.a.run.app", grpc.ssl_channel_credentials()) as channel:
+    with grpc.secure_channel("dataretriever-app-6oed3mtq4a-lz.a.run.app:443", grpc.ssl_channel_credentials()) as channel:
         stub = ping_pb2_grpc.DataRetrieverStub(channel)
 
         ping_request = ping_pb2.PingRequest(domain="googleususdhaskfdsasljhdgf.com")
@@ -16,7 +16,7 @@ def run():
         ping_result = stub.PingDomain(ping_request)
         print(ping_result)
         if ping_result.okay:
-            print("Ping successful")
+            print("Ping successful:", ping_result.message)
         else:
             print("Ping failed")
 

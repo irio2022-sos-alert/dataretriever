@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DATARETRIEVER_IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_DATARETRIEVER_APP_NAME }}:latest
+      WHISTLEBLOWER_IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_WHISTLEBLOWER_APP_NAME }}:latest
     steps:
       - name: Login
         uses: google-github-actions/setup-gcloud@v0
@@ -32,6 +33,14 @@ jobs:
 
       - name: Deploy sender docker
         run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_DATARETRIEVER_APP_NAME }} $DATARETRIEVER_IMAGE_NAME
+        shell: bash
+
+      - name: Build sender docker
+        run: chmod +x scripts/build-docker.sh && ./scripts/build-docker.sh whistleblower $WHISTLEBLOWER_IMAGE_NAME
+        shell: bash
+
+      - name: Deploy sender docker
+        run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_WHISTLEBLOWER_APP_NAME }} $WHISTLEBLOWER_IMAGE_NAME
         shell: bash
 
 # gcloud projects add-iam-policy-binding cloud-run-grpc-ping --member=serviceAccount:k-jonak@cloud-run-grpc-ping.iam.gserviceaccount.com --role=roles/run.admin
