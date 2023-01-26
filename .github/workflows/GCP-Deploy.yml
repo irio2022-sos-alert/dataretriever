@@ -22,9 +22,6 @@ jobs:
           service_account_email: ${{ secrets.GCP_EMAIL }}
           service_account_key: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Create whistleblower pubsub schema
-        run: gcloud pubsub schemas create schema-test --type=PROTOCOL_BUFFER --definition=protos/ping.proto
-
       - name: Configure Docker
         run: gcloud auth configure-docker --quiet
 
@@ -59,7 +56,7 @@ jobs:
       #   run: gcloud pubsub topics create whistleblower-topic
 
       - name: Create whistleblower pubsub topic
-        run: chmod +x scripts/create-topic-nofail.sh && ./scripts/create-topic-nofail.sh ${{ secrets.GCP_WHISTLEBLOWER_TOPIC }} schema-test
+        run: chmod +x scripts/create-topic-nofail.sh && ./scripts/create-topic-nofail.sh ${{ secrets.GCP_WHISTLEBLOWER_TOPIC }}
         shell: bash
 
       - name: Create whistleblower pubsub subscription
