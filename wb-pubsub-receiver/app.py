@@ -1,5 +1,5 @@
 import os
-
+import logging
 import ping_pb2
 import ping_pb2_grpc
 import grpc
@@ -20,8 +20,11 @@ def test():
 
 @app.route("/transform", methods=['POST'])
 def transform():
+    logging.info("Received post")
+    logging.info(f"json: {request.json}")
     return f"test {request.json}"
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     app.run()
