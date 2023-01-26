@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build wb-receiver docker
-        run: chmod +x scripts/build-docker.sh && ./scripts/build-docker.sh dataretriever $WB_RECEIVER_IMAGE_NAME
+        run: chmod +x scripts/build-docker.sh && ./scripts/build-docker.sh wb-pubsub-receiver $WB_RECEIVER_IMAGE_NAME
         shell: bash
 
       - name: Deploy wb-receiver docker
