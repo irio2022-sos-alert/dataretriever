@@ -49,6 +49,11 @@ jobs:
         run: chmod +x scripts/create-topic-nofail.sh && ./scripts/create-topic-nofail.sh ${{ secrets.GCP_WHISTLEBLOWER_TOPIC }}
         shell: bash
 
+      - name: Create whistleblower pubsub subscription
+        run: chmod +x scripts/create-sub-nofail.sh && ./scripts/create-sub-nofail.sh \
+             ${{ secrets.GCP_WHISTLEBLOWER_SUBSCRIPTION }} ${{ secrets.GCP_WHISTLEBLOWER_TOPIC }} ${{ secrets.GCP_WHISTLEBLOWER_APP_ENDPOINT }}
+        shell: bash
+
       # - name: Create whislteblower pubsub subscription
       #   run: gcloud pubsub subscriptions create ${{ secrets.GCP_WHISTLEBLOWER_SUBSCRIPTION }} \
       #        --topic=${{ secrets.GCP_WHISTLEBLOWER_TOPIC }} \
