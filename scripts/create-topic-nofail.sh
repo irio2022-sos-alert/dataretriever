@@ -1,5 +1,5 @@
 #!/bin/bash
 
 readonly topic="$1"
-
-gcloud pubsub topics create $topic --message-encoding=json || true
+readonly schema="$2"
+gcloud pubsub topics create $topic --message-encoding=json --schema=$schema || true
