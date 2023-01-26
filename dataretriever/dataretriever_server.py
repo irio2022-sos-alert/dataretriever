@@ -6,6 +6,7 @@ import ping_pb2_grpc
 import grpc
 import os
 from google.cloud import pubsub_v1
+import json
 
 # _PORT = os.environ["PORT"]
 
@@ -39,9 +40,11 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
         publisher_client = pubsub_v1.PublisherClient()
         topic_path = publisher_client.topic_path(self.project_id, self.topic_id)
         logging.info(f"topic_path: {topic_path}")
-        
-        data = str({data: response}).encode("utf-8")
-        logging.info(f"Data: {str({data: response})}")
+
+        data = {"response": response}
+        data_json = json.dumps(data)
+        send_data = str(data_json).encode("utf-8")
+        logging.info(f"Data: {send_data}")
         
         try:
             publisher_client.publish(topic_path, data)
