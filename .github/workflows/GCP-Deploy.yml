@@ -13,6 +13,7 @@ jobs:
     env:
       DATARETRIEVER_IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_DATARETRIEVER_APP_NAME }}:latest
       WHISTLEBLOWER_IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_WHISTLEBLOWER_APP_NAME }}:latest
+      WB_RECEIVER_IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_WB_RECEIVER_APP_NAME }}:latest
     steps:
       - name: Login
         uses: google-github-actions/setup-gcloud@v0
@@ -26,6 +27,14 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Build wb-receiver docker
+        run: chmod +x scripts/build-docker.sh && ./scripts/build-docker.sh dataretriever $WB_RECEIVER_IMAGE_NAME
+        shell: bash
+
+      - name: Deploy wb-receiver docker
+        run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_WB_RECEIVER_APP_NAME }} $WB_RECEIVER_IMAGE_NAME
+        shell: bash
 
       - name: Build dataretriever docker
         run: chmod +x scripts/build-docker.sh && ./scripts/build-docker.sh dataretriever $DATARETRIEVER_IMAGE_NAME
