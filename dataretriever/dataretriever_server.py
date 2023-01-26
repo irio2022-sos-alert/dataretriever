@@ -46,10 +46,12 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
         send_data = str(data_json).encode("utf-8")
         logging.info(f"Data: {send_data}")
         
-        try:
-            publisher_client.publish(topic_path, data)
-        except:
-            logging.info(f"{self.topic_id} not found.")
+        publisher_client.publish(topic_path, data)
+
+        # try:
+        #     publisher_client.publish(topic_path, data)
+        # except:
+        #     logging.info(f"{self.topic_id} not found.")
 
 
     def call_service(self, time):
