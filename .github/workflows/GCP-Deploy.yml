@@ -46,6 +46,11 @@ jobs:
       - name: Create whistleblower pubsub topic
         run: gcloud pubsub topics create whistleblower-topic
 
+      - name: Create whislteblower pubsub subscription
+        run: gcloud pubsub subscriptions create ${{ secrets.GCP_WHISTLEBLOWER_SUBSCRIPTION }} \
+             --topic=${{ secrets.GCP_WHISTLEBLOWER_TOPIC }} \
+             --push-endpoint=${{ secrets.GCP_WHISTLEBLOWER_APP_ENDPOINT }}
+
 # gcloud projects add-iam-policy-binding cloud-run-grpc-ping --member=serviceAccount:k-jonak@cloud-run-grpc-ping.iam.gserviceaccount.com --role=roles/run.admin
 
 # gcloud projects add-iam-policy-binding cloud-run-grpc-ping --member=serviceAccount:k-jonak@cloud-run-grpc-ping.iam.gserviceaccount.com --role=roles/storage.admin
