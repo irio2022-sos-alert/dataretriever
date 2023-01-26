@@ -38,10 +38,12 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
     def publish_response_data(self, response):
         publisher_client = pubsub_v1.PublisherClient()
         topic_path = publisher_client.topic_path(self.project_id, self.topic_id)
-
+        logging.info(f"topic_path: {topic_path}")
+        
+        data = str({data: response}).encode("utf-8")
+        logging.info(f"Data: {str({data: response})}")
+        
         try:
-            data = str({data: response}).encode("utf-8")
-            logging.info(f"Data: {str({data: response})}")
             publisher_client.publish(topic_path, data)
         except:
             logging.info(f"{self.topic_id} not found.")
