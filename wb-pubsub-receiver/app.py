@@ -13,7 +13,7 @@ def init():
     global project_id, topic_id, whistleblower_endpoint
     project_id = "cloud-run-grpc-ping"
     topic_id = "whistleblower-topic"
-    whistleblower_endpoint = ""
+    whistleblower_endpoint = "whistleblower-app-6oed3mtq4a-lz.a.run.app"
 
 
 @app.route("/", methods=['GET'])
@@ -33,7 +33,9 @@ def create_whistleblower_message(request):
 
 def send_to_whistleblower(request):
     mess = create_whistleblower_message(request)
-
+    print("test print")
+    logging.info("test logging")
+    logging.info(f"Data: {str(request)}")
     with grpc.secure_channel(whistleblower_endpoint, grpc.ssl_channel_credentials()) as channel:
         stub = ping_pb2_grpc.WhistleblowerStub(channel)
         ping_result = stub.SumResponseTimes(mess)
