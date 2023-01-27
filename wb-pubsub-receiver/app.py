@@ -4,8 +4,19 @@ import ping_pb2
 import ping_pb2_grpc
 import grpc
 from flask import Flask, request
+from gcp_logging import GCPHandler
 
 app = Flask(__name__)
+
+
+g = GCPHandler(app, parentLogName="parent",
+    childLogName="child",
+    traceHeaderName='X-Cloud-Trace-Context',
+    labels= {'foo': 'bar', 'baz': 'qux'},
+    resource='global')
+
+g.setLevel(logging.INFO)
+app.logger.addHandler(g)
 
 
 @app.before_first_request
@@ -34,13 +45,12 @@ def create_whistleblower_message(request):
 def send_to_whistleblower(request):
     mess = create_whistleblower_message(request)
     print("test print")
-    logging.info("test logging")
-    logging.info(f"Data: {str(request)}")
+    app.logger.info("test info logger")
     with grpc.secure_channel(whistleblower_endpoint, grpc.ssl_channel_credentials()) as channel:
         stub = ping_pb2_grpc.WhistleblowerStub(channel)
         ping_result = stub.SumResponseTimes(mess)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    app.logger.setLevel(logging.INFO)
     app.run()
