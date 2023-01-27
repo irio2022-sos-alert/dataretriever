@@ -4,6 +4,8 @@ import ping_pb2
 import ping_pb2_grpc
 import grpc
 from flask import Flask, request
+import ast
+import base64
 
 app = Flask(__name__)
 
@@ -28,7 +30,10 @@ def transform():
 
 
 def create_whistleblower_message(request):
-    return ping_pb2.CalculateSum(domain=str(request), time=22.0)
+    dict = ast.literal_eval(request.data.decode('utf-8'))
+    req = dict['message']['data']
+    req = ast.literal_eval(base64.b64decode(req).decode('utf-8'))
+    return ping_pb2.CalculateSum(domain=req['domain'], time=req['time'])
 
 
 def send_to_whistleblower(request):

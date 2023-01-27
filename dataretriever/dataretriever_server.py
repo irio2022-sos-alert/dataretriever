@@ -25,23 +25,22 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
     ) -> ping_pb2.Status:
         
         response = ping(request.domain)
-        calculated_sum = self.call_service(response)
+        # calculated_sum = self.call_service(response)
         self.x += 1
 
-        self.publish_response_data(response)
+        self.publish_response_data(response, request.domain)
 
         return ping_pb2.Status(
             okay=True,
-            message=f"Ping response: {response}, Sum: {calculated_sum}, count: {self.x}"
+            message=f"Ping response: {response}, count: {self.x}"
         ) 
 
 
-    def publish_response_data(self, response):
+    def publish_response_data(self, time, domain):
         publisher_client = pubsub_v1.PublisherClient()
         topic_path = publisher_client.topic_path(self.project_id, self.topic_id)
-        logging.info(f"topic_path: {topic_path}")
 
-        data = {"response": response}
+        data = {"domain": domain ,"time": time}
         data_json = json.dumps(data)
         send_data = str(data_json).encode("utf-8")
         logging.info(f"Data: {send_data}")
