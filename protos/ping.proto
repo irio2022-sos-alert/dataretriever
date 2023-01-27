@@ -2,29 +2,30 @@ syntax = "proto3";
 
 package ping;
 
-message CalculateSum {
+message PingStatus {
     string domain = 1;
     double time = 2;
+    bool okay = 3;
 };
 
-message RetSum {
+message WbStatus {
     bool okay = 1;
-    double sum = 2;
+    string message = 2;
 };
 
 service Whistleblower {
-    rpc SumResponseTimes(CalculateSum) returns (RetSum);
+    rpc SumResponseTimes(PingStatus) returns (WbStatus);
 };
 
 message PingRequest {
     string domain = 1;
 };
 
-message Status {
+message DrStatus {
     bool okay = 1;
     string message = 2;
 };
 
 service DataRetriever {
-    rpc PingDomain(PingRequest) returns (Status);
+    rpc PingDomain(PingRequest) returns (DrStatus);
 };

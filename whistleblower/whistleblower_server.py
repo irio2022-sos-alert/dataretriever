@@ -13,14 +13,15 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
     def __init__(self) -> None:
         pass
 
-    def SumResponseTimes(
-        self, request: ping_pb2.CalculateSum, context
-    ) -> ping_pb2.RetSum:
+    def AckPingStatus(
+        self, request: ping_pb2.PingStatus, context
+    ) -> ping_pb2.WbStatus:
         logging.info(f"Request time: {request.time}")
         logging.info(f"Request domain: {request.domain}")
-        return ping_pb2.RetSum(
+        logging.info(f"Request okay: {request.okay}")
+        return ping_pb2.WbStatus(
             okay=True,
-            sum=request.time + 1.0
+            message="Ack"
         )
 
 

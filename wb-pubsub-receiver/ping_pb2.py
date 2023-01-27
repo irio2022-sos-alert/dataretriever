@@ -13,23 +13,23 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nping.proto\x12\x04ping\",\n\x0c\x43\x61lculateSum\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\x12\x0c\n\x04time\x18\x02 \x01(\x01\"#\n\x06RetSum\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0b\n\x03sum\x18\x02 \x01(\x01\"\x1d\n\x0bPingRequest\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\"\'\n\x06Status\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2E\n\rWhistleblower\x12\x34\n\x10SumResponseTimes\x12\x12.ping.CalculateSum\x1a\x0c.ping.RetSum2>\n\rDataRetriever\x12-\n\nPingDomain\x12\x11.ping.PingRequest\x1a\x0c.ping.Statusb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nping.proto\x12\x04ping\"8\n\nPingStatus\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\x12\x0c\n\x04time\x18\x02 \x01(\x01\x12\x0c\n\x04okay\x18\x03 \x01(\x08\")\n\x08WbStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1d\n\x0bPingRequest\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\")\n\x08\x44rStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2E\n\rWhistleblower\x12\x34\n\x10SumResponseTimes\x12\x10.ping.PingStatus\x1a\x0e.ping.WbStatus2@\n\rDataRetriever\x12/\n\nPingDomain\x12\x11.ping.PingRequest\x1a\x0e.ping.DrStatusb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ping_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _CALCULATESUM._serialized_start=20
-  _CALCULATESUM._serialized_end=64
-  _RETSUM._serialized_start=66
-  _RETSUM._serialized_end=101
-  _PINGREQUEST._serialized_start=103
-  _PINGREQUEST._serialized_end=132
-  _STATUS._serialized_start=134
-  _STATUS._serialized_end=173
-  _WHISTLEBLOWER._serialized_start=175
-  _WHISTLEBLOWER._serialized_end=244
-  _DATARETRIEVER._serialized_start=246
-  _DATARETRIEVER._serialized_end=308
+  _PINGSTATUS._serialized_start=20
+  _PINGSTATUS._serialized_end=76
+  _WBSTATUS._serialized_start=78
+  _WBSTATUS._serialized_end=119
+  _PINGREQUEST._serialized_start=121
+  _PINGREQUEST._serialized_end=150
+  _DRSTATUS._serialized_start=152
+  _DRSTATUS._serialized_end=193
+  _WHISTLEBLOWER._serialized_start=195
+  _WHISTLEBLOWER._serialized_end=264
+  _DATARETRIEVER._serialized_start=266
+  _DATARETRIEVER._serialized_end=330
 # @@protoc_insertion_point(module_scope)

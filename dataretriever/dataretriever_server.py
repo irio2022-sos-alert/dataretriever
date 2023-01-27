@@ -22,25 +22,27 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
 
     def PingDomain(
         self, request: ping_pb2.PingRequest, context
-    ) -> ping_pb2.Status:
+    ) -> ping_pb2.DrStatus:
         
         response = ping(request.domain)
-        # calculated_sum = self.call_service(response)
         self.x += 1
 
-        self.publish_response_data(response, request.domain)
+        if response:
+            self.publish_response_data(response, request.domain)
+        else:
+            self.publish_response_data(0.0, request.domain, okay=False)
 
-        return ping_pb2.Status(
+        return ping_pb2.DrStatus(
             okay=True,
             message=f"Ping response: {response}, count: {self.x}"
         ) 
 
 
-    def publish_response_data(self, time, domain):
+    def publish_response_data(self, time, domain, okay=True):
         publisher_client = pubsub_v1.PublisherClient()
         topic_path = publisher_client.topic_path(self.project_id, self.topic_id)
 
-        data = {"domain": domain ,"time": time}
+        data = {"domain": domain ,"time": time, "okay": okay}
         data_json = json.dumps(data)
         send_data = str(data_json).encode("utf-8")
         logging.info(f"Data: {send_data}")
@@ -51,17 +53,6 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
         #     publisher_client.publish(topic_path, data)
         # except:
         #     logging.info(f"{self.topic_id} not found.")
-
-
-    def call_service(self, time):
-        with grpc.secure_channel("whistleblower-app-6oed3mtq4a-lz.a.run.app", grpc.ssl_channel_credentials()) as channel:
-            stub = ping_pb2_grpc.WhistleblowerStub(channel)
-
-            sum_request = ping_pb2.CalculateSum(domain="google.com", time=time)
-
-            ping_result = stub.SumResponseTimes(sum_request)
-            
-            return ping_result.sum
 
 
 def serve(port, whistleblower_endpoint, project_id, topic_id) -> None:

@@ -16,8 +16,8 @@ class WhistleblowerStub(object):
         """
         self.SumResponseTimes = channel.unary_unary(
                 '/ping.Whistleblower/SumResponseTimes',
-                request_serializer=ping__pb2.CalculateSum.SerializeToString,
-                response_deserializer=ping__pb2.RetSum.FromString,
+                request_serializer=ping__pb2.PingStatus.SerializeToString,
+                response_deserializer=ping__pb2.WbStatus.FromString,
                 )
 
 
@@ -35,8 +35,8 @@ def add_WhistleblowerServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'SumResponseTimes': grpc.unary_unary_rpc_method_handler(
                     servicer.SumResponseTimes,
-                    request_deserializer=ping__pb2.CalculateSum.FromString,
-                    response_serializer=ping__pb2.RetSum.SerializeToString,
+                    request_deserializer=ping__pb2.PingStatus.FromString,
+                    response_serializer=ping__pb2.WbStatus.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -60,8 +60,8 @@ class Whistleblower(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/ping.Whistleblower/SumResponseTimes',
-            ping__pb2.CalculateSum.SerializeToString,
-            ping__pb2.RetSum.FromString,
+            ping__pb2.PingStatus.SerializeToString,
+            ping__pb2.WbStatus.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -78,7 +78,7 @@ class DataRetrieverStub(object):
         self.PingDomain = channel.unary_unary(
                 '/ping.DataRetriever/PingDomain',
                 request_serializer=ping__pb2.PingRequest.SerializeToString,
-                response_deserializer=ping__pb2.Status.FromString,
+                response_deserializer=ping__pb2.DrStatus.FromString,
                 )
 
 
@@ -97,7 +97,7 @@ def add_DataRetrieverServicer_to_server(servicer, server):
             'PingDomain': grpc.unary_unary_rpc_method_handler(
                     servicer.PingDomain,
                     request_deserializer=ping__pb2.PingRequest.FromString,
-                    response_serializer=ping__pb2.Status.SerializeToString,
+                    response_serializer=ping__pb2.DrStatus.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -122,6 +122,6 @@ class DataRetriever(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/ping.DataRetriever/PingDomain',
             ping__pb2.PingRequest.SerializeToString,
-            ping__pb2.Status.FromString,
+            ping__pb2.DrStatus.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
