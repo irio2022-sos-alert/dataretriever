@@ -33,7 +33,7 @@ jobs:
         shell: bash
 
       - name: Deploy wb-receiver docker
-        run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_WB_RECEIVER_APP_NAME }} $WB_RECEIVER_IMAGE_NAME
+        run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_WB_RECEIVER_APP_NAME }} $WB_RECEIVER_IMAGE_NAME ${{ secrets.GCP_WB_RECEIVER_ENV }}
         shell: bash
 
       - name: Build dataretriever docker
@@ -41,7 +41,7 @@ jobs:
         shell: bash
 
       - name: Deploy dataretriever docker
-        run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_DATARETRIEVER_APP_NAME }} $DATARETRIEVER_IMAGE_NAME
+        run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_DATARETRIEVER_APP_NAME }} $DATARETRIEVER_IMAGE_NAME ${{ secrets.GCP_DATARETRIEVER_ENV }}
         shell: bash
 
       - name: Build whistleblower docker
@@ -49,7 +49,7 @@ jobs:
         shell: bash
 
       - name: Deploy whistleblower docker
-        run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_WHISTLEBLOWER_APP_NAME }} $WHISTLEBLOWER_IMAGE_NAME
+        run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_WHISTLEBLOWER_APP_NAME }} $WHISTLEBLOWER_IMAGE_NAME ${{ secrets.GCP_WHISTLEBLOWER_ENV }}
         shell: bash
 
       # - name: Create whistleblower pubsub topic

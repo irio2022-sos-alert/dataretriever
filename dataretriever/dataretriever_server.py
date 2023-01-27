@@ -13,9 +13,7 @@ import json
 class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
     """Provides methods that implement functionality of data retriever server."""
 
-    def __init__(self, whistleblower_endpoint, project_id, topic_id) -> None:
-        self.x = 0
-        self.whistleblower_endpoint = whistleblower_endpoint
+    def __init__(self, project_id, topic_id) -> None:
         self.project_id = project_id
         self.topic_id = topic_id
 
@@ -59,10 +57,10 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
         #     logging.info(f"{self.topic_id} not found.")
 
 
-def serve(port, whistleblower_endpoint, project_id, topic_id) -> None:
+def serve(port, project_id, topic_id) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     ping_pb2_grpc.add_DataRetrieverServicer_to_server(
-        DataRetrieverServicer(whistleblower_endpoint, project_id, topic_id), server
+        DataRetrieverServicer(project_id, topic_id), server
     )
 
     server.add_insecure_port(f"[::]:{port}")
@@ -72,9 +70,8 @@ def serve(port, whistleblower_endpoint, project_id, topic_id) -> None:
 
 if __name__ == "__main__":
     port = os.environ.get("PORT", "50051")
-    whistleblower_endpoint = os.environ.get("WHISTLEBLOWER_ENDPOINT", "[::]:50052")
-    project_id = os.environ.get("PROJECT_ID", "cloud-run-grpc-ping")
-    topic_id = os.environ.get("TOPIC_ID", "whistleblower-topic")
+    project_id = os.environ.get("PROJECT_ID")
+    topic_id = os.environ.get("TOPIC_ID")
 
     logging.basicConfig(level=logging.INFO)
-    serve(port, whistleblower_endpoint, project_id, topic_id)
+    serve(port, project_id, topic_id)

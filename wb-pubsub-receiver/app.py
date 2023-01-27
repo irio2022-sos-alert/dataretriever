@@ -13,10 +13,10 @@ app = Flask(__name__)
 @app.before_first_request
 def init():
     global project_id, topic_id, whistleblower_endpoint, dataretriever_endpoint
-    project_id = "cloud-run-grpc-ping"
-    topic_id = "whistleblower-topic"
-    whistleblower_endpoint = "whistleblower-app-6oed3mtq4a-lz.a.run.app"
-    dataretriever_endpoint = "dataretriever-app-6oed3mtq4a-lz.a.run.app"
+    project_id = os.getenv("PROJECT_ID")
+    topic_id = os.getenv("TOPIC_ID")
+    whistleblower_endpoint = os.getenv("WB_ENDPOINT")
+    dataretriever_endpoint = os.getenv("DR_ENDPOINT")
 
 
 @app.route("/", methods=['GET'])
