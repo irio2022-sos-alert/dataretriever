@@ -3,7 +3,6 @@ import ssl
 
 import sqlalchemy
 from sqlmodel import Session, SQLModel
-from models import Admins, Ownership
 
 
 def connect_tcp_socket() -> sqlalchemy.engine.base.Engine:
