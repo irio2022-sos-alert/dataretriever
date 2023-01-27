@@ -44,7 +44,7 @@ def create_dict_from_req(request):
     return dict
 
 def create_wb_message(dict):
-    return ping_pb2.PingStatus(domain=dict['domain'], time=dict['time'], okay=dict['okay'])
+    return ping_pb2.PingStatus(domain=dict['domain'], time=dict['time'], okay=(dict['okay']==1))
 
 
 def create_dr_message(dict):

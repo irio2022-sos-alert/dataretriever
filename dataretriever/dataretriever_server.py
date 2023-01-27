@@ -30,7 +30,7 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
         if response:
             self.publish_response_data(response, request.domain)
         else:
-            self.publish_response_data(0.0, request.domain, okay=False)
+            self.publish_response_data(0.0, request.domain, okay=1)
 
         return ping_pb2.DrStatus(
             okay=True,
@@ -38,7 +38,7 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
         ) 
 
 
-    def publish_response_data(self, time, domain, okay=True):
+    def publish_response_data(self, time, domain, okay=0):
         publisher_client = pubsub_v1.PublisherClient()
         topic_path = publisher_client.topic_path(self.project_id, self.topic_id)
 
