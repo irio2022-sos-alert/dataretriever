@@ -20,18 +20,18 @@ def init():
 
 
 @app.route("/", methods=['GET'])
-def test():
+def default():
     return "OK"
 
 
 @app.route("/transform-wb", methods=['POST'])
-def transform():
+def transform_wb():
     dict = create_dict_from_req(request)
     send_wb_message(dict)
     return "OK"
 
 @app.route("/transform-dr", methods=['POST'])
-def transform():
+def transform_dr():
     dict = create_dict_from_req(request)
     send_dr_message(dict)
     return "OK"
