@@ -17,7 +17,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
         self, request: ping_pb2.CalculateSum, context
     ) -> ping_pb2.RetSum:
         logging.info(f"Request time: {request.time}")
-        
+        logging.info(f"Request domain: {request.domain}")
         return ping_pb2.RetSum(
             okay=True,
             sum=request.time + 1.0

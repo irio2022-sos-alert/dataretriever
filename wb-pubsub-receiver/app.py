@@ -10,8 +10,7 @@ app = Flask(__name__)
 
 @app.before_first_request
 def init():
-    global project_id, topic_id, whistleblower_endpoint, request_data
-    request_data = ""
+    global project_id, topic_id, whistleblower_endpoint
     project_id = "cloud-run-grpc-ping"
     topic_id = "whistleblower-topic"
     whistleblower_endpoint = "whistleblower-app-6oed3mtq4a-lz.a.run.app"
@@ -19,19 +18,17 @@ def init():
 
 @app.route("/", methods=['GET'])
 def test():
-    return request_data
+    return "OK"
 
 
 @app.route("/transform", methods=['POST'])
 def transform():
-    global request_data
-    request_data = str(request)
     send_to_whistleblower(request)
     return "OK"
 
 
 def create_whistleblower_message(request):
-    return ping_pb2.CalculateSum(domain="google.com", time=22.0)
+    return ping_pb2.CalculateSum(domain=str(request.data), time=22.0)
 
 
 def send_to_whistleblower(request):
