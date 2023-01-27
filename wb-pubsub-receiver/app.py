@@ -28,7 +28,7 @@ def transform():
 
 
 def create_whistleblower_message(request):
-    return ping_pb2.CalculateSum(domain=str(request.data), time=22.0)
+    return ping_pb2.CalculateSum(domain=str(request), time=22.0)
 
 
 def send_to_whistleblower(request):
