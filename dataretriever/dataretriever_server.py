@@ -16,6 +16,8 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
     def __init__(self, project_id, topic_id) -> None:
         self.project_id = project_id
         self.topic_id = topic_id
+        self.publisher_client = pubsub_v1.PublisherClient()
+        self.topic_path = self.publisher_client.topic_path(self.project_id, self.topic_id)
 
 
     def PingDomain(
@@ -23,33 +25,25 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
     ) -> ping_pb2.DrStatus:
         
         response = ping(request.domain)
-        self.x += 1
 
         if response:
             self.publish_response_data(response, request.domain)
         else:
             self.publish_response_data(0.0, request.domain, okay=0)
 
-        var1 = os.environ.get("KEY1", "default1")
-        var2 = os.environ.get("KEY2", "default2")
-        logging.info(f"ENVIRON TEST: {var1}, {var2}")
-
         return ping_pb2.DrStatus(
             okay=True,
-            message=f"Ping response: {response}, count: {self.x}"
+            message=f"Ping response: {response}"
         ) 
 
 
     def publish_response_data(self, time, domain, okay=1):
-        publisher_client = pubsub_v1.PublisherClient()
-        topic_path = publisher_client.topic_path(self.project_id, self.topic_id)
-
         data = {"domain": domain ,"time": time, "okay": okay}
         data_json = json.dumps(data)
         send_data = str(data_json).encode("utf-8")
         logging.info(f"Data: {send_data}")
         
-        publisher_client.publish(topic_path, send_data)
+        self.publisher_client.publish(self.topic_path, send_data)
 
         # try:
         #     publisher_client.publish(topic_path, data)
