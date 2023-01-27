@@ -67,7 +67,6 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
 
 def serve(port, whistleblower_endpoint, project_id, topic_id) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    logging.info("SERVE!")
     ping_pb2_grpc.add_DataRetrieverServicer_to_server(
         DataRetrieverServicer(whistleblower_endpoint, project_id, topic_id), server
     )
@@ -84,5 +83,4 @@ if __name__ == "__main__":
     topic_id = os.environ.get("TOPIC_ID", "whistleblower-topic")
 
     logging.basicConfig(level=logging.INFO)
-    logging.info("MAIN!")
     serve(port, whistleblower_endpoint, project_id, topic_id)

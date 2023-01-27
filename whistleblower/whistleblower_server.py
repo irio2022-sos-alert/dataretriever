@@ -3,6 +3,7 @@ import ping_pb2
 import ping_pb2_grpc
 import grpc
 import os
+import logging
 
 # _PORT = os.environ["PORT"]
 
@@ -15,6 +16,8 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
     def SumResponseTimes(
         self, request: ping_pb2.CalculateSum, context
     ) -> ping_pb2.RetSum:
+        logging.info(f"Request time: {request.time}")
+        
         return ping_pb2.RetSum(
             okay=True,
             sum=request.time + 1.0
@@ -33,5 +36,6 @@ def serve(port) -> None:
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     port = os.environ.get("PORT", "50052")
     serve(port)
