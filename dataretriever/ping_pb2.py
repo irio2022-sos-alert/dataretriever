@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nping.proto\x12\x04ping\"8\n\nPingStatus\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\x12\x0c\n\x04time\x18\x02 \x01(\x01\x12\x0c\n\x04okay\x18\x03 \x01(\x08\")\n\x08WbStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1d\n\x0bPingRequest\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\")\n\x08\x44rStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2E\n\rWhistleblower\x12\x34\n\x10SumResponseTimes\x12\x10.ping.PingStatus\x1a\x0e.ping.WbStatus2@\n\rDataRetriever\x12/\n\nPingDomain\x12\x11.ping.PingRequest\x1a\x0e.ping.DrStatusb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nping.proto\x12\x04ping\"8\n\nPingStatus\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\x12\x0c\n\x04time\x18\x02 \x01(\x01\x12\x0c\n\x04okay\x18\x03 \x01(\x08\")\n\x08WbStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1d\n\x0bPingRequest\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\")\n\x08\x44rStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2B\n\rWhistleblower\x12\x31\n\rAckPingStatus\x12\x10.ping.PingStatus\x1a\x0e.ping.WbStatus2@\n\rDataRetriever\x12/\n\nPingDomain\x12\x11.ping.PingRequest\x1a\x0e.ping.DrStatusb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ping_pb2', globals())
@@ -29,7 +29,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _DRSTATUS._serialized_start=152
   _DRSTATUS._serialized_end=193
   _WHISTLEBLOWER._serialized_start=195
-  _WHISTLEBLOWER._serialized_end=264
-  _DATARETRIEVER._serialized_start=266
-  _DATARETRIEVER._serialized_end=330
+  _WHISTLEBLOWER._serialized_end=261
+  _DATARETRIEVER._serialized_start=263
+  _DATARETRIEVER._serialized_end=327
 # @@protoc_insertion_point(module_scope)

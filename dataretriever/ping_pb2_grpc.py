@@ -14,8 +14,8 @@ class WhistleblowerStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.SumResponseTimes = channel.unary_unary(
-                '/ping.Whistleblower/SumResponseTimes',
+        self.AckPingStatus = channel.unary_unary(
+                '/ping.Whistleblower/AckPingStatus',
                 request_serializer=ping__pb2.PingStatus.SerializeToString,
                 response_deserializer=ping__pb2.WbStatus.FromString,
                 )
@@ -24,7 +24,7 @@ class WhistleblowerStub(object):
 class WhistleblowerServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def SumResponseTimes(self, request, context):
+    def AckPingStatus(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -33,8 +33,8 @@ class WhistleblowerServicer(object):
 
 def add_WhistleblowerServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'SumResponseTimes': grpc.unary_unary_rpc_method_handler(
-                    servicer.SumResponseTimes,
+            'AckPingStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.AckPingStatus,
                     request_deserializer=ping__pb2.PingStatus.FromString,
                     response_serializer=ping__pb2.WbStatus.SerializeToString,
             ),
@@ -49,7 +49,7 @@ class Whistleblower(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def SumResponseTimes(request,
+    def AckPingStatus(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,7 +59,7 @@ class Whistleblower(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ping.Whistleblower/SumResponseTimes',
+        return grpc.experimental.unary_unary(request, target, '/ping.Whistleblower/AckPingStatus',
             ping__pb2.PingStatus.SerializeToString,
             ping__pb2.WbStatus.FromString,
             options, channel_credentials,

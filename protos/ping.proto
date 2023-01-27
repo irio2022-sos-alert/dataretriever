@@ -14,7 +14,7 @@ message WbStatus {
 };
 
 service Whistleblower {
-    rpc SumResponseTimes(PingStatus) returns (WbStatus);
+    rpc AckPingStatus(PingStatus) returns (WbStatus);
 };
 
 message PingRequest {

@@ -55,14 +55,14 @@ def send_wb_message(dict):
     mess = create_wb_message(dict)
     with grpc.secure_channel(whistleblower_endpoint, grpc.ssl_channel_credentials()) as channel:
         stub = ping_pb2_grpc.WhistleblowerStub(channel)
-        ping_result = stub.PingStatus(mess)
+        ping_result = stub.AckPingStatus(mess)
 
 
 def send_dr_message(dict):
     mess = create_dr_message(dict)
     with grpc.secure_channel(dataretriever_endpoint, grpc.ssl_channel_credentials()) as channel:
         stub = ping_pb2_grpc.DataRetrieverStub(channel)
-        ping_result = stub.PingRequest(mess)
+        ping_result = stub.PingDomain(mess)
 
 
 if __name__ == "__main__":
