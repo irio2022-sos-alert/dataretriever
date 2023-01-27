@@ -4,6 +4,10 @@ import ping_pb2_grpc
 import grpc
 import os
 import logging
+from db import init_connection_pool, migrate_db
+from models import Services, Responses
+from sqlmodel import Session
+
 
 # _PORT = os.environ["PORT"]
 
@@ -25,7 +29,15 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
         )
 
 
+def init_db():
+    global engine
+    engine = init_connection_pool()
+    migrate_db(engine)
+
+
 def serve(port) -> None:
+    init_db()
+    
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     ping_pb2_grpc.add_WhistleblowerServicer_to_server(
         WhistleblowerServicer(), server

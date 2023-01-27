@@ -8,7 +8,6 @@ import os
 from google.cloud import pubsub_v1
 import json
 
-# _PORT = os.environ["PORT"]
 
 class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
     """Provides methods that implement functionality of data retriever server."""
@@ -69,3 +68,4 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=logging.INFO)
     serve(port, project_id, topic_id)
+
