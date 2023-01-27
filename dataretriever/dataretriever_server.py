@@ -32,6 +32,10 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
         else:
             self.publish_response_data(0.0, request.domain, okay=0)
 
+        var1 = os.environ.get("KEY1", "default1")
+        var2 = os.environ.get("KEY2", "default2")
+        logging.info(f"ENVIRON TEST: {var1}, {var2}")
+
         return ping_pb2.DrStatus(
             okay=True,
             message=f"Ping response: {response}, count: {self.x}"

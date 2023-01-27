@@ -1,4 +1,6 @@
 grpcio
-ping3
 grpcio-tools
 protobuf
+pg8000
+SQLAlchemy
+sqlmodel
