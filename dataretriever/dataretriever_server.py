@@ -46,7 +46,7 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
         send_data = str(data_json).encode("utf-8")
         logging.info(f"Data: {send_data}")
         
-        publisher_client.publish(topic_path, data)
+        publisher_client.publish(topic_path, send_data)
 
         # try:
         #     publisher_client.publish(topic_path, data)
