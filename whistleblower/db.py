@@ -60,7 +60,8 @@ def connect_unix_socket() -> sqlalchemy.engine.base.Engine:
             username=db_user,
             password=db_pass,
             database=db_name,
-            query={"unix_sock": "{}/.s.PGSQL.5432".format(unix_socket_path)},
+            query={"unix_socket": unix_socket_path}
+            # query={"unix_sock": "{}/.s.PGSQL.5432".format(unix_socket_path)},
         ),
         pool_size=5,
         max_overflow=2,
