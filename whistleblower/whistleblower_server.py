@@ -4,23 +4,40 @@ import ping_pb2_grpc
 import grpc
 import os
 import logging
+import time
 from db import init_connection_pool, migrate_db
 from models import Services, Responses
 from sqlmodel import Session
+from sqlalchemy import func
 
 
 def get_service_window(service_id):
-    return {"alerting-window": 15.0}
+    with Session(engine) as session:
+        return float(session.query(Services).get(service_id).alerting_window)
+
+def check_init_service(service_id):
+    with Session(engine) as session:
+        if session.query(Responses).all() == []:
+            update_service_last_available_timestamp(service_id)
 
 
 def get_service_last_available_timestamp(service_id):
-    pass
+    with Session(engine) as session:
+        return (
+            session.query(Responses, func.max(Responses.timestamp))
+            .where(Responses.service_id == service_id)
+            .first()
+            .timestamp
+        )
 
-def update_service_last_available_timestamp(service_id, timestamp):
-    pass
+def update_service_last_available_timestamp(service_id):
+    timestamp = time.time()
+    with Session(engine) as session:
+        session.add(Responses(service_id=service_id, timestamp=timestamp))
+        session.commit()
 
 def create_alertmanager_message(service_id):
-    pass
+    return ping_pb2.AlertRequest(serviceId=service_id)
 
 
 class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
@@ -32,18 +49,23 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
     def AckPingStatus(
         self, request: ping_pb2.PingStatus, context
     ) -> ping_pb2.WbStatus:
-        # service_id, timestamp = request.service_id, request.timestamp
-        # last_available_timestamp = get_service_last_available_timestamp(service_id)
+        service_id, timestamp = request.service_id, request.timestamp
+        check_init_service(service_id)
+        last_available_timestamp = get_service_last_available_timestamp(service_id)
 
-        # if (last_available_timestamp > timestamp):
-        #     return
+        logging.info(f"last available: {last_available_timestamp}, current: {request.timestamp}")
 
-        # if request.okay:
-        #     update_service_last_available_timestamp(service_id, timestamp)
-        # else:
-        #     alerting_window = get_service_window(service_id)
-        #     if (timestamp-last_available_timestamp >= alerting_window):
-        #         self.notify_alertmanager(service_id)
+        if (last_available_timestamp > timestamp):
+            return
+
+        if request.okay:
+            update_service_last_available_timestamp(service_id)
+        else:
+            alerting_window = get_service_window(service_id)
+            if alerting_window is None:
+                alerting_window = 50.
+            if (timestamp-last_available_timestamp >= alerting_window):
+                self.notify_alertmanager(service_id)
 
         return ping_pb2.WbStatus(
             okay=True,
@@ -53,7 +75,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
     def notify_alertmanager(self, service_id):
         with grpc.secure_channel(self.alertmanager_endpoint, grpc.ssl_channel_credentials()) as channel:
             mess = create_alertmanager_message(service_id)
-            stub = ping_pb2_grpc.DataRetrieverStub(channel)
+            stub = ping_pb2_grpc.AlertManagerStub(channel)
             # ping_result = stub.PingDomain(mess)
 
 def init_db():

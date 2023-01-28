@@ -42,11 +42,11 @@ def create_dict_from_req(request):
     return dict
 
 def create_wb_message(dict):
-    return ping_pb2.PingStatus(domain=dict['domain'], time=dict['time'], okay=(dict['okay']==1))
+    return ping_pb2.PingStatus(service_id=dict['service_id'], timestamp=dict['timestamp'], okay=(dict['okay']==1))
 
 
 def create_dr_message(dict):
-    return ping_pb2.PingRequest(domain=dict['domain'])
+    return ping_pb2.PingRequest(service_id=dict['service_id'], domain=dict['domain'])
 
 
 def send_wb_message(dict):

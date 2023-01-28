@@ -125,3 +125,100 @@ class DataRetriever(object):
             ping__pb2.DrStatus.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class AlertManagerStub(object):
+    """alertmanager service definition
+    """
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.Alert = channel.unary_unary(
+                '/ping.AlertManager/Alert',
+                request_serializer=ping__pb2.AlertRequest.SerializeToString,
+                response_deserializer=ping__pb2.Status.FromString,
+                )
+        self.handleReceiptConfirmation = channel.unary_unary(
+                '/ping.AlertManager/handleReceiptConfirmation',
+                request_serializer=ping__pb2.ReceiptConfirmation.SerializeToString,
+                response_deserializer=ping__pb2.Status.FromString,
+                )
+
+
+class AlertManagerServicer(object):
+    """alertmanager service definition
+    """
+
+    def Alert(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def handleReceiptConfirmation(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_AlertManagerServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'Alert': grpc.unary_unary_rpc_method_handler(
+                    servicer.Alert,
+                    request_deserializer=ping__pb2.AlertRequest.FromString,
+                    response_serializer=ping__pb2.Status.SerializeToString,
+            ),
+            'handleReceiptConfirmation': grpc.unary_unary_rpc_method_handler(
+                    servicer.handleReceiptConfirmation,
+                    request_deserializer=ping__pb2.ReceiptConfirmation.FromString,
+                    response_serializer=ping__pb2.Status.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'ping.AlertManager', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class AlertManager(object):
+    """alertmanager service definition
+    """
+
+    @staticmethod
+    def Alert(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/ping.AlertManager/Alert',
+            ping__pb2.AlertRequest.SerializeToString,
+            ping__pb2.Status.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def handleReceiptConfirmation(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/ping.AlertManager/handleReceiptConfirmation',
+            ping__pb2.ReceiptConfirmation.SerializeToString,
+            ping__pb2.Status.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

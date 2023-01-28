@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nping.proto\x12\x04ping\"8\n\nPingStatus\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\x12\x0c\n\x04time\x18\x02 \x01(\x01\x12\x0c\n\x04okay\x18\x03 \x01(\x08\")\n\x08WbStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1d\n\x0bPingRequest\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\")\n\x08\x44rStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2B\n\rWhistleblower\x12\x31\n\rAckPingStatus\x12\x10.ping.PingStatus\x1a\x0e.ping.WbStatus2@\n\rDataRetriever\x12/\n\nPingDomain\x12\x11.ping.PingRequest\x1a\x0e.ping.DrStatusb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nping.proto\x12\x04ping\"A\n\nPingStatus\x12\x12\n\nservice_id\x18\x01 \x01(\x03\x12\x11\n\ttimestamp\x18\x02 \x01(\x01\x12\x0c\n\x04okay\x18\x03 \x01(\x08\")\n\x08WbStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"1\n\x0bPingRequest\x12\x12\n\nservice_id\x18\x01 \x01(\x03\x12\x0e\n\x06\x64omain\x18\x02 \x01(\t\")\n\x08\x44rStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"!\n\x0c\x41lertRequest\x12\x11\n\tserviceId\x18\x01 \x01(\x03\"(\n\x13ReceiptConfirmation\x12\x11\n\tserviceId\x18\x01 \x01(\x03\"\'\n\x06Status\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2B\n\rWhistleblower\x12\x31\n\rAckPingStatus\x12\x10.ping.PingStatus\x1a\x0e.ping.WbStatus2@\n\rDataRetriever\x12/\n\nPingDomain\x12\x11.ping.PingRequest\x1a\x0e.ping.DrStatus2\x83\x01\n\x0c\x41lertManager\x12+\n\x05\x41lert\x12\x12.ping.AlertRequest\x1a\x0c.ping.Status\"\x00\x12\x46\n\x19handleReceiptConfirmation\x12\x19.ping.ReceiptConfirmation\x1a\x0c.ping.Status\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ping_pb2', globals())
@@ -21,15 +21,23 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _PINGSTATUS._serialized_start=20
-  _PINGSTATUS._serialized_end=76
-  _WBSTATUS._serialized_start=78
-  _WBSTATUS._serialized_end=119
-  _PINGREQUEST._serialized_start=121
-  _PINGREQUEST._serialized_end=150
-  _DRSTATUS._serialized_start=152
-  _DRSTATUS._serialized_end=193
-  _WHISTLEBLOWER._serialized_start=195
-  _WHISTLEBLOWER._serialized_end=261
-  _DATARETRIEVER._serialized_start=263
-  _DATARETRIEVER._serialized_end=327
+  _PINGSTATUS._serialized_end=85
+  _WBSTATUS._serialized_start=87
+  _WBSTATUS._serialized_end=128
+  _PINGREQUEST._serialized_start=130
+  _PINGREQUEST._serialized_end=179
+  _DRSTATUS._serialized_start=181
+  _DRSTATUS._serialized_end=222
+  _ALERTREQUEST._serialized_start=224
+  _ALERTREQUEST._serialized_end=257
+  _RECEIPTCONFIRMATION._serialized_start=259
+  _RECEIPTCONFIRMATION._serialized_end=299
+  _STATUS._serialized_start=301
+  _STATUS._serialized_end=340
+  _WHISTLEBLOWER._serialized_start=342
+  _WHISTLEBLOWER._serialized_end=408
+  _DATARETRIEVER._serialized_start=410
+  _DATARETRIEVER._serialized_end=474
+  _ALERTMANAGER._serialized_start=477
+  _ALERTMANAGER._serialized_end=608
 # @@protoc_insertion_point(module_scope)

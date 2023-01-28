@@ -3,8 +3,8 @@ syntax = "proto3";
 package ping;
 
 message PingStatus {
-    string domain = 1;
-    double time = 2;
+    int64 service_id = 1;
+    double timestamp = 2;
     bool okay = 3;
 };
 
@@ -18,7 +18,8 @@ service Whistleblower {
 };
 
 message PingRequest {
-    string domain = 1;
+    int64 service_id = 1;
+    string domain = 2;
 };
 
 message DrStatus {
@@ -29,3 +30,22 @@ message DrStatus {
 service DataRetriever {
     rpc PingDomain(PingRequest) returns (DrStatus);
 };
+
+// alertmanager service definition
+service AlertManager {
+  rpc Alert(AlertRequest) returns (Status) {}
+  rpc handleReceiptConfirmation(ReceiptConfirmation) returns (Status) {}
+}
+
+message AlertRequest {
+  int64 serviceId = 1;
+}
+
+message ReceiptConfirmation {
+  int64 serviceId = 1;
+}
+
+message Status {
+  bool okay = 1;
+  string message = 2;
+}
