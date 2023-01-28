@@ -2,7 +2,7 @@ from sqlmodel import Field, SQLModel
 
 
 class Service(SQLModel, table=True):
-    __tablename__ = "services"
+    __tablename__ = "service"
     id: int = Field(primary_key=True)
     name: str = Field(primary_key=True)
     domain: str 
