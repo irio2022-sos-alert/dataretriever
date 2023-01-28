@@ -64,6 +64,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
     def AckPingStatus(
         self, request: ping_pb2.PingStatus, context
     ) -> ping_pb2.WbStatus:
+        init_mock_service()
         service_id, timestamp = request.service_id, int(request.timestamp)
         check_init_service(service_id)
         last_available_timestamp = get_service_last_available_timestamp(service_id)
