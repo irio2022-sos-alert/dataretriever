@@ -6,14 +6,14 @@ import os
 import logging
 import time
 from db import init_connection_pool, migrate_db
-from models import Service, Responses
+from models import Services, Responses
 from sqlmodel import Session
 from sqlalchemy import func
 
 
 def get_service_window(service_id):
     with Session(engine) as session:
-        return float(session.query(Service).get(service_id).alerting_window)
+        return float(session.query(Services).get(service_id).alerting_window)
 
 def check_init_service(service_id):
     with Session(engine) as session:
