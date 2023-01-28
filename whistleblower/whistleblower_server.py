@@ -11,14 +11,29 @@ from sqlmodel import Session
 from sqlalchemy import func
 
 
+def init_mock_service():
+    with Session(engine) as session:
+        if session.query(Services).all() == []:
+            session.add(Services(
+                id=1,
+                name="test",
+                domain="google.com",
+                frequency=5,
+                alerting_window=50,
+                allowed_response_time=50
+            ))
+            session.commit()
+
+
 def get_service_window(service_id):
     with Session(engine) as session:
         return float(session.query(Services).get(service_id).alerting_window)
 
 def check_init_service(service_id):
     with Session(engine) as session:
-        if session.query(Responses).all() == []:
-            update_service_last_available_timestamp(service_id)
+        if session.query(Responses).all() != []:
+            return
+    update_service_last_available_timestamp(service_id)
 
 
 def get_service_last_available_timestamp(service_id):
