@@ -23,15 +23,15 @@ def check_init_service(service_id):
 
 def get_service_last_available_timestamp(service_id):
     with Session(engine) as session:
-        return (
-            session.query(Responses, func.max(Responses.timestamp))
+        timestamps = (
+            session.query(Responses)
             .where(Responses.service_id == service_id)
-            .first()
-            .timestamp
+            .all()
         )
+        return max([ts.timestamp for ts in timestamps])
 
 def update_service_last_available_timestamp(service_id):
-    timestamp = time.time()
+    timestamp = int(time.time())
     with Session(engine) as session:
         session.add(Responses(service_id=service_id, timestamp=timestamp))
         session.commit()
@@ -49,7 +49,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
     def AckPingStatus(
         self, request: ping_pb2.PingStatus, context
     ) -> ping_pb2.WbStatus:
-        service_id, timestamp = request.service_id, request.timestamp
+        service_id, timestamp = request.service_id, int(request.timestamp)
         check_init_service(service_id)
         last_available_timestamp = get_service_last_available_timestamp(service_id)
 
@@ -63,7 +63,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
         else:
             alerting_window = get_service_window(service_id)
             if alerting_window is None:
-                alerting_window = 50.
+                alerting_window = 50
             if (timestamp-last_available_timestamp >= alerting_window):
                 self.notify_alertmanager(service_id)
 

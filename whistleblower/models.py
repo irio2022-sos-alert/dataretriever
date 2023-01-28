@@ -15,7 +15,7 @@ class Services(SQLModel, table=True):
 class Responses(SQLModel, table=True):
     __tablename__ = "responses"
     service_id: int = Field(foreign_key="services.id", primary_key=True)
-    timestamp: float
+    timestamp: int
 
 
 class Admins(SQLModel, table=True):
