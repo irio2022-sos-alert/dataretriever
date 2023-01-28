@@ -31,24 +31,24 @@ def get_service_window(service_id):
 
 def check_init_service(service_id):
     with Session(engine) as session:
-        if session.query(Responses).all() != []:
-            return
-    update_service_last_available_timestamp(service_id)
+        if session.query(Responses).get(service_id) is None:
+            timestamp = int(time.time())
+            session.add(Responses(service_id=service_id, timestamp=timestamp))
+            session.commit()
 
 
 def get_service_last_available_timestamp(service_id):
     with Session(engine) as session:
-        timestamps = (
-            session.query(Responses)
-            .where(Responses.service_id == service_id)
-            .all()
-        )
-        return max([ts.timestamp for ts in timestamps])
+        return session.query(Responses).get(service_id).timestamp
 
 def update_service_last_available_timestamp(service_id):
     timestamp = int(time.time())
     with Session(engine) as session:
-        session.add(Responses(service_id=service_id, timestamp=timestamp))
+        session.query(
+            Responses
+        ).filter(
+            Responses.service_id == service_id
+        ).update({Responses.timestamp: timestamp}, synchronize_session=False)
         session.commit()
 
 def create_alertmanager_message(service_id):
