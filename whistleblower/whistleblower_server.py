@@ -32,18 +32,18 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
     def AckPingStatus(
         self, request: ping_pb2.PingStatus, context
     ) -> ping_pb2.WbStatus:
-        service_id, timestamp = request.service_id, request.timestamp
-        last_available_timestamp = get_service_last_available_timestamp(service_id)
+        # service_id, timestamp = request.service_id, request.timestamp
+        # last_available_timestamp = get_service_last_available_timestamp(service_id)
 
-        if (last_available_timestamp > timestamp):
-            return
+        # if (last_available_timestamp > timestamp):
+        #     return
 
-        if request.okay:
-            update_service_last_available_timestamp(service_id, timestamp)
-        else:
-            alerting_window = get_service_window(service_id)
-            if (timestamp-last_available_timestamp >= alerting_window):
-                self.notify_alertmanager(service_id)
+        # if request.okay:
+        #     update_service_last_available_timestamp(service_id, timestamp)
+        # else:
+        #     alerting_window = get_service_window(service_id)
+        #     if (timestamp-last_available_timestamp >= alerting_window):
+        #         self.notify_alertmanager(service_id)
 
         return ping_pb2.WbStatus(
             okay=True,
