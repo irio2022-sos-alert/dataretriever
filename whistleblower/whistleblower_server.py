@@ -81,7 +81,10 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
             if alerting_window is None:
                 alerting_window = 50
             if (timestamp-last_available_timestamp >= alerting_window):
+                logging.info(f"Alerting: {alerting_window}, {timestamp-last_available_timestamp}")
                 self.notify_alertmanager(service_id)
+            else:
+                logging.info(f"Alerting: {alerting_window}, {timestamp-last_available_timestamp}")
 
         logging.info(f"returning")
         return ping_pb2.WbStatus(
