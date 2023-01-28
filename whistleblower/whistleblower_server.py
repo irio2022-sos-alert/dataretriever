@@ -83,6 +83,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
             if (timestamp-last_available_timestamp >= alerting_window):
                 self.notify_alertmanager(service_id)
 
+        logging.info(f"returning")
         return ping_pb2.WbStatus(
             okay=True,
             message="Ack"
