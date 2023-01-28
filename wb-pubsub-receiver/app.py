@@ -12,9 +12,7 @@ app = Flask(__name__)
 
 @app.before_first_request
 def init():
-    global project_id, topic_id, whistleblower_endpoint, dataretriever_endpoint
-    project_id = os.getenv("PROJECT_ID")
-    topic_id = os.getenv("TOPIC_ID")
+    global whistleblower_endpoint, dataretriever_endpoint
     whistleblower_endpoint = os.getenv("WB_ENDPOINT")
     dataretriever_endpoint = os.getenv("DR_ENDPOINT")
 
