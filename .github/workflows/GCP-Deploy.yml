@@ -28,6 +28,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Build whistleblower docker
+        run: chmod +x scripts/build-docker.sh && ./scripts/build-docker.sh whistleblower $WHISTLEBLOWER_IMAGE_NAME
+        shell: bash
+
+      - name: Deploy whistleblower docker
+        run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_WHISTLEBLOWER_APP_NAME }} $WHISTLEBLOWER_IMAGE_NAME ${{ secrets.GCP_WHISTLEBLOWER_ENV }}
+        shell: bash
+
       - name: Build wb-receiver docker
         run: chmod +x scripts/build-docker.sh && ./scripts/build-docker.sh wb-pubsub-receiver $WB_RECEIVER_IMAGE_NAME
         shell: bash
@@ -42,14 +50,6 @@ jobs:
 
       - name: Deploy dataretriever docker
         run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_DATARETRIEVER_APP_NAME }} $DATARETRIEVER_IMAGE_NAME ${{ secrets.GCP_DATARETRIEVER_ENV }}
-        shell: bash
-
-      - name: Build whistleblower docker
-        run: chmod +x scripts/build-docker.sh && ./scripts/build-docker.sh whistleblower $WHISTLEBLOWER_IMAGE_NAME
-        shell: bash
-
-      - name: Deploy whistleblower docker
-        run: chmod +x scripts/deploy.sh && ./scripts/deploy.sh ${{ secrets.GCP_WHISTLEBLOWER_APP_NAME }} $WHISTLEBLOWER_IMAGE_NAME ${{ secrets.GCP_WHISTLEBLOWER_ENV }}
         shell: bash
 
       # - name: Create whistleblower pubsub topic
