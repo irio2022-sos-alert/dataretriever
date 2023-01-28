@@ -42,6 +42,7 @@ def create_dict_from_req(request):
     return dict
 
 def create_wb_message(dict):
+    logging.info(f"id: {dict['service_id']}, ts: {dict['timestamp']}, okay: {dict['okay']}")
     return ping_pb2.PingStatus(service_id=dict['service_id'], timestamp=dict['timestamp'], okay=(dict['okay']==1))
 
 
@@ -51,6 +52,7 @@ def create_dr_message(dict):
 
 def send_wb_message(dict):
     mess = create_wb_message(dict)
+    logging.info(f"whistleblower_endpoint: {whistleblower_endpoint}")
     with grpc.secure_channel(whistleblower_endpoint, grpc.ssl_channel_credentials()) as channel:
         stub = ping_pb2_grpc.WhistleblowerStub(channel)
         ping_result = stub.AckPingStatus(mess)
