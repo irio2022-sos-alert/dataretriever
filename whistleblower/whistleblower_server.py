@@ -5,11 +5,15 @@ import grpc
 import os
 import logging
 import time
+import calendar
 from db import init_connection_pool, migrate_db
 from models import Services, Responses
 from sqlmodel import Session
 from sqlalchemy import func
 
+
+def get_time():
+    return calendar.timegm(time.gmtime())
 
 def init_mock_service():
     with Session(engine) as session:
@@ -32,7 +36,7 @@ def get_service_window(service_id):
 def check_init_service(service_id):
     with Session(engine) as session:
         if session.query(Responses).get(service_id) is None:
-            timestamp = int(time.time())
+            timestamp = get_time()
             session.add(Responses(service_id=service_id, timestamp=timestamp))
             session.commit()
 
@@ -42,7 +46,7 @@ def get_service_last_available_timestamp(service_id):
         return session.query(Responses).get(service_id).timestamp
 
 def update_service_last_available_timestamp(service_id):
-    timestamp = int(time.time())
+    timestamp = get_time()
     with Session(engine) as session:
         session.query(
             Responses
@@ -69,7 +73,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
         self, request: ping_pb2.PingStatus, context
     ) -> ping_pb2.WbStatus:
         init_mock_service()
-        service_id, timestamp = request.service_id, int(request.timestamp)
+        service_id, timestamp = request.service_id, request.timestamp
         check_init_service(service_id)
         last_available_timestamp = get_service_last_available_timestamp(service_id)
 

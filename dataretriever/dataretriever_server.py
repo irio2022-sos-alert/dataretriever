@@ -8,6 +8,11 @@ import os
 from google.cloud import pubsub_v1
 import json
 import time
+import calendar
+
+
+def get_time():
+    return calendar.timegm(time.gmtime())
 
 
 class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
@@ -38,7 +43,7 @@ class DataRetrieverServicer(ping_pb2_grpc.DataRetrieverServicer):
 
 
     def publish_response_data(self, service_id, okay=1):
-        data = {"service_id": service_id ,"timestamp": time.time(), "okay": okay}
+        data = {"service_id": service_id ,"timestamp": get_time(), "okay": okay}
         data_json = json.dumps(data)
         send_data = str(data_json).encode("utf-8")
         logging.info(f"Data: {send_data}")
