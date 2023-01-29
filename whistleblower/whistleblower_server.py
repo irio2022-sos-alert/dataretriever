@@ -79,13 +79,12 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
         logging.info(f"id: {service_id}, last available: {last_available_timestamp}, current: {request.timestamp}")
 
         if (last_available_timestamp > timestamp):
-            return ping_pb2.WbStatus(
-                okay=True,
-                message="Ack"
-            )
+            logging.info(f"last timestamp higher, returning")
+            return ping_pb2.WbStatus(okay=True, message="Ack")
 
         if request.okay:
             update_service_last_available_timestamp(service_id, timestamp)
+            logging.info(f"updated last timestamp")
         else:
             alerting_window = get_service_window(service_id)
             if alerting_window is None:
@@ -96,10 +95,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
             else:
                 logging.info(f"Not alerting yet: {alerting_window}, {timestamp-last_available_timestamp}")
 
-        return ping_pb2.WbStatus(
-            okay=True,
-            message="Ack"
-        )
+        return ping_pb2.WbStatus(okay=True,message="Ack")
 
     def notify_alertmanager(self, service_id):
         with grpc.secure_channel(self.alertmanager_endpoint, grpc.ssl_channel_credentials()) as channel:
