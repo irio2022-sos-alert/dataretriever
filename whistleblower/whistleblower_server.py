@@ -15,19 +15,6 @@ from sqlalchemy import func
 def get_time():
     return calendar.timegm(time.gmtime())
 
-def init_mock_service():
-    with Session(engine) as session:
-        if session.query(Services).all() == []:
-            session.add(Services(
-                id=1,
-                name="test",
-                domain="google.com",
-                frequency=5,
-                alerting_window=50,
-                allowed_response_time=50
-            ))
-            session.commit()
-
 
 def get_service_window(service_id):
     with Session(engine) as session:
@@ -71,7 +58,6 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
     def AckPingStatus(
         self, request: ping_pb2.PingStatus, context
     ) -> ping_pb2.WbStatus:
-        init_mock_service()
         service_id, timestamp = request.service_id, request.timestamp
         check_init_service(service_id)
         last_available_timestamp = get_service_last_available_timestamp(service_id)
@@ -91,7 +77,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
                 alerting_window = 50
             if (timestamp-last_available_timestamp >= alerting_window):
                 logging.info(f"Alerting: {alerting_window}, {timestamp-last_available_timestamp}")
-                self.notify_alertmanager(service_id)
+                return self.notify_alertmanager(service_id)
             else:
                 logging.info(f"Not alerting yet: {alerting_window}, {timestamp-last_available_timestamp}")
 
@@ -101,7 +87,8 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
         with grpc.secure_channel(self.alertmanager_endpoint, grpc.ssl_channel_credentials()) as channel:
             mess = create_alertmanager_message(service_id)
             stub = ping_pb2_grpc.AlertManagerStub(channel)
-            ping_result = stub.Alert(mess)
+            ping_result = stub.Alert(mess) 
+            return ping_pb2.WbStatus(okay=ping_result.okay, message=ping_result.message)
 
 
 def init_db():
