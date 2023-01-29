@@ -12,7 +12,7 @@ def run():
     with grpc.secure_channel("whistleblower-app-2xieibhnsq-lz.a.run.app", grpc.ssl_channel_credentials()) as channel:
         stub = ping_pb2_grpc.WhistleblowerStub(channel)
 
-        ping_request = ping_pb2.PingStatus(service_id=1, timestamp=time.time(), okay=True)
+        ping_request = ping_pb2.PingStatus(service_id=1, timestamp=time.time(), okay=False)
 
         ping_result = stub.AckPingStatus(ping_request)
         print(ping_result)

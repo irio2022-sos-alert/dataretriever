@@ -48,8 +48,12 @@ def update_service_last_available_timestamp(service_id):
             Responses
         ).filter(
             Responses.service_id == service_id
-        ).update({Responses.timestamp: timestamp}, synchronize_session=False)
+        ).update(
+            {Responses.timestamp: timestamp}, 
+            synchronize_session=False
+        )
         session.commit()
+
 
 def create_alertmanager_message(service_id):
     return ping_pb2.AlertRequest(serviceId=service_id)
@@ -72,7 +76,10 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
         logging.info(f"last available: {last_available_timestamp}, current: {request.timestamp}")
 
         if (last_available_timestamp > timestamp):
-            return
+            return ping_pb2.WbStatus(
+                okay=True,
+                message="Ack"
+            )
 
         if request.okay:
             update_service_last_available_timestamp(service_id)
@@ -84,9 +91,8 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
                 logging.info(f"Alerting: {alerting_window}, {timestamp-last_available_timestamp}")
                 self.notify_alertmanager(service_id)
             else:
-                logging.info(f"Alerting: {alerting_window}, {timestamp-last_available_timestamp}")
+                logging.info(f"Not alerting yet: {alerting_window}, {timestamp-last_available_timestamp}")
 
-        logging.info(f"returning")
         return ping_pb2.WbStatus(
             okay=True,
             message="Ack"
@@ -97,6 +103,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
             mess = create_alertmanager_message(service_id)
             stub = ping_pb2_grpc.AlertManagerStub(channel)
             # ping_result = stub.PingDomain(mess)
+
 
 def init_db():
     global engine
