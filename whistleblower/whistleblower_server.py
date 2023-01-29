@@ -45,8 +45,7 @@ def get_service_last_available_timestamp(service_id):
     with Session(engine) as session:
         return session.query(Responses).get(service_id).timestamp
 
-def update_service_last_available_timestamp(service_id):
-    timestamp = get_time()
+def update_service_last_available_timestamp(service_id, timestamp):
     with Session(engine) as session:
         session.query(
             Responses
@@ -77,7 +76,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
         check_init_service(service_id)
         last_available_timestamp = get_service_last_available_timestamp(service_id)
 
-        logging.info(f"last available: {last_available_timestamp}, current: {request.timestamp}")
+        logging.info(f"id: {service_id}, last available: {last_available_timestamp}, current: {request.timestamp}")
 
         if (last_available_timestamp > timestamp):
             return ping_pb2.WbStatus(
@@ -86,7 +85,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
             )
 
         if request.okay:
-            update_service_last_available_timestamp(service_id)
+            update_service_last_available_timestamp(service_id, timestamp)
         else:
             alerting_window = get_service_window(service_id)
             if alerting_window is None:
