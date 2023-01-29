@@ -13,31 +13,31 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nping.proto\x12\x04ping\"A\n\nPingStatus\x12\x12\n\nservice_id\x18\x01 \x01(\x03\x12\x11\n\ttimestamp\x18\x02 \x01(\x01\x12\x0c\n\x04okay\x18\x03 \x01(\x08\")\n\x08WbStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"1\n\x0bPingRequest\x12\x12\n\nservice_id\x18\x01 \x01(\x03\x12\x0e\n\x06\x64omain\x18\x02 \x01(\t\")\n\x08\x44rStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"!\n\x0c\x41lertRequest\x12\x11\n\tserviceId\x18\x01 \x01(\x03\"(\n\x13ReceiptConfirmation\x12\x11\n\tserviceId\x18\x01 \x01(\x03\"\'\n\x06Status\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2B\n\rWhistleblower\x12\x31\n\rAckPingStatus\x12\x10.ping.PingStatus\x1a\x0e.ping.WbStatus2@\n\rDataRetriever\x12/\n\nPingDomain\x12\x11.ping.PingRequest\x1a\x0e.ping.DrStatus2\x83\x01\n\x0c\x41lertManager\x12+\n\x05\x41lert\x12\x12.ping.AlertRequest\x1a\x0c.ping.Status\"\x00\x12\x46\n\x19handleReceiptConfirmation\x12\x19.ping.ReceiptConfirmation\x1a\x0c.ping.Status\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nping.proto\x12\x05\x61lert\"A\n\nPingStatus\x12\x12\n\nservice_id\x18\x01 \x01(\x03\x12\x11\n\ttimestamp\x18\x02 \x01(\x01\x12\x0c\n\x04okay\x18\x03 \x01(\x08\")\n\x08WbStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"1\n\x0bPingRequest\x12\x12\n\nservice_id\x18\x01 \x01(\x03\x12\x0e\n\x06\x64omain\x18\x02 \x01(\t\")\n\x08\x44rStatus\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"!\n\x0c\x41lertRequest\x12\x11\n\tserviceId\x18\x01 \x01(\x03\"(\n\x13ReceiptConfirmation\x12\x11\n\tserviceId\x18\x01 \x01(\x03\"\'\n\x06Status\x12\x0c\n\x04okay\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2D\n\rWhistleblower\x12\x33\n\rAckPingStatus\x12\x11.alert.PingStatus\x1a\x0f.alert.WbStatus2B\n\rDataRetriever\x12\x31\n\nPingDomain\x12\x12.alert.PingRequest\x1a\x0f.alert.DrStatus2\x87\x01\n\x0c\x41lertManager\x12-\n\x05\x41lert\x12\x13.alert.AlertRequest\x1a\r.alert.Status\"\x00\x12H\n\x19handleReceiptConfirmation\x12\x1a.alert.ReceiptConfirmation\x1a\r.alert.Status\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ping_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _PINGSTATUS._serialized_start=20
-  _PINGSTATUS._serialized_end=85
-  _WBSTATUS._serialized_start=87
-  _WBSTATUS._serialized_end=128
-  _PINGREQUEST._serialized_start=130
-  _PINGREQUEST._serialized_end=179
-  _DRSTATUS._serialized_start=181
-  _DRSTATUS._serialized_end=222
-  _ALERTREQUEST._serialized_start=224
-  _ALERTREQUEST._serialized_end=257
-  _RECEIPTCONFIRMATION._serialized_start=259
-  _RECEIPTCONFIRMATION._serialized_end=299
-  _STATUS._serialized_start=301
-  _STATUS._serialized_end=340
-  _WHISTLEBLOWER._serialized_start=342
-  _WHISTLEBLOWER._serialized_end=408
-  _DATARETRIEVER._serialized_start=410
-  _DATARETRIEVER._serialized_end=474
-  _ALERTMANAGER._serialized_start=477
-  _ALERTMANAGER._serialized_end=608
+  _PINGSTATUS._serialized_start=21
+  _PINGSTATUS._serialized_end=86
+  _WBSTATUS._serialized_start=88
+  _WBSTATUS._serialized_end=129
+  _PINGREQUEST._serialized_start=131
+  _PINGREQUEST._serialized_end=180
+  _DRSTATUS._serialized_start=182
+  _DRSTATUS._serialized_end=223
+  _ALERTREQUEST._serialized_start=225
+  _ALERTREQUEST._serialized_end=258
+  _RECEIPTCONFIRMATION._serialized_start=260
+  _RECEIPTCONFIRMATION._serialized_end=300
+  _STATUS._serialized_start=302
+  _STATUS._serialized_end=341
+  _WHISTLEBLOWER._serialized_start=343
+  _WHISTLEBLOWER._serialized_end=411
+  _DATARETRIEVER._serialized_start=413
+  _DATARETRIEVER._serialized_end=479
+  _ALERTMANAGER._serialized_start=482
+  _ALERTMANAGER._serialized_end=617
 # @@protoc_insertion_point(module_scope)

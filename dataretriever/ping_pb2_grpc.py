@@ -15,7 +15,7 @@ class WhistleblowerStub(object):
             channel: A grpc.Channel.
         """
         self.AckPingStatus = channel.unary_unary(
-                '/ping.Whistleblower/AckPingStatus',
+                '/alert.Whistleblower/AckPingStatus',
                 request_serializer=ping__pb2.PingStatus.SerializeToString,
                 response_deserializer=ping__pb2.WbStatus.FromString,
                 )
@@ -40,7 +40,7 @@ def add_WhistleblowerServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'ping.Whistleblower', rpc_method_handlers)
+            'alert.Whistleblower', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -59,7 +59,7 @@ class Whistleblower(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ping.Whistleblower/AckPingStatus',
+        return grpc.experimental.unary_unary(request, target, '/alert.Whistleblower/AckPingStatus',
             ping__pb2.PingStatus.SerializeToString,
             ping__pb2.WbStatus.FromString,
             options, channel_credentials,
@@ -76,7 +76,7 @@ class DataRetrieverStub(object):
             channel: A grpc.Channel.
         """
         self.PingDomain = channel.unary_unary(
-                '/ping.DataRetriever/PingDomain',
+                '/alert.DataRetriever/PingDomain',
                 request_serializer=ping__pb2.PingRequest.SerializeToString,
                 response_deserializer=ping__pb2.DrStatus.FromString,
                 )
@@ -101,7 +101,7 @@ def add_DataRetrieverServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'ping.DataRetriever', rpc_method_handlers)
+            'alert.DataRetriever', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -120,7 +120,7 @@ class DataRetriever(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ping.DataRetriever/PingDomain',
+        return grpc.experimental.unary_unary(request, target, '/alert.DataRetriever/PingDomain',
             ping__pb2.PingRequest.SerializeToString,
             ping__pb2.DrStatus.FromString,
             options, channel_credentials,
@@ -138,12 +138,12 @@ class AlertManagerStub(object):
             channel: A grpc.Channel.
         """
         self.Alert = channel.unary_unary(
-                '/ping.AlertManager/Alert',
+                '/alert.AlertManager/Alert',
                 request_serializer=ping__pb2.AlertRequest.SerializeToString,
                 response_deserializer=ping__pb2.Status.FromString,
                 )
         self.handleReceiptConfirmation = channel.unary_unary(
-                '/ping.AlertManager/handleReceiptConfirmation',
+                '/alert.AlertManager/handleReceiptConfirmation',
                 request_serializer=ping__pb2.ReceiptConfirmation.SerializeToString,
                 response_deserializer=ping__pb2.Status.FromString,
                 )
@@ -180,7 +180,7 @@ def add_AlertManagerServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'ping.AlertManager', rpc_method_handlers)
+            'alert.AlertManager', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -200,7 +200,7 @@ class AlertManager(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ping.AlertManager/Alert',
+        return grpc.experimental.unary_unary(request, target, '/alert.AlertManager/Alert',
             ping__pb2.AlertRequest.SerializeToString,
             ping__pb2.Status.FromString,
             options, channel_credentials,
@@ -217,7 +217,7 @@ class AlertManager(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/ping.AlertManager/handleReceiptConfirmation',
+        return grpc.experimental.unary_unary(request, target, '/alert.AlertManager/handleReceiptConfirmation',
             ping__pb2.ReceiptConfirmation.SerializeToString,
             ping__pb2.Status.FromString,
             options, channel_credentials,
