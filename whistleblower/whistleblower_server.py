@@ -105,7 +105,7 @@ class WhistleblowerServicer(ping_pb2_grpc.WhistleblowerServicer):
         with grpc.secure_channel(self.alertmanager_endpoint, grpc.ssl_channel_credentials()) as channel:
             mess = create_alertmanager_message(service_id)
             stub = ping_pb2_grpc.AlertManagerStub(channel)
-            # ping_result = stub.PingDomain(mess)
+            ping_result = stub.PingDomain(mess)
 
 
 def init_db():
